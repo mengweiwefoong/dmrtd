@@ -52,29 +52,48 @@ class MRZ {
 
   static int calculateCheckDigit(String checkString) {
     const charMap = {
-      "0" :  "0",  "1" :  "1",
-      "2" :  "2",  "3" :  "3",
-      "4" :  "4",  "5" :  "5",
-      "6" :  "6",  "7" :  "7",
-      "8" :  "8",  "9" :  "9",
-      "<" :  "0",  " " :  "0",
-      "A" : "10",  "B" : "11",
-      "C" : "12",  "D" : "13",
-      "E" : "14",  "F" : "15",
-      "G" : "16",  "H" : "17",
-      "I" : "18",  "J" : "19",
-      "K" : "20",  "L" : "21",
-      "M" : "22",  "N" : "23",
-      "O" : "24",  "P" : "25",
-      "Q" : "26",  "R" : "27",
-      "S" : "28",  "T" : "29",
-      "U" : "30",  "V" : "31",
-      "W" : "32",  "X" : "33",
-      "Y" : "34",  "Z" : "35"
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "<": "0",
+      " ": "0",
+      "A": "10",
+      "B": "11",
+      "C": "12",
+      "D": "13",
+      "E": "14",
+      "F": "15",
+      "G": "16",
+      "H": "17",
+      "I": "18",
+      "J": "19",
+      "K": "20",
+      "L": "21",
+      "M": "22",
+      "N": "23",
+      "O": "24",
+      "P": "25",
+      "Q": "26",
+      "R": "27",
+      "S": "28",
+      "T": "29",
+      "U": "30",
+      "V": "31",
+      "W": "32",
+      "X": "33",
+      "Y": "34",
+      "Z": "35",
     };
 
     var sum = 0;
-    var m   = 0;
+    var m = 0;
     const multipliers = [7, 3, 1];
     for (int i = 0; i < checkString.length; i++) {
       final lookup = charMap[checkString[i]];
@@ -114,14 +133,26 @@ class MRZ {
     _optData = _read(istream, 15);
     dateOfBirth = _readDate(istream, futureDate: false);
 
-    _assertCheckDigit(dateOfBirth.formatYYMMDD(), _readCD(istream),
-        "Data of Birth check digit mismatch");
+    // _assertCheckDigit(dateOfBirth.formatYYMMDD(), _readCD(istream),
+    //     "Data of Birth check digit mismatch");
+
+    _assertCheckDigit(
+      dateOfBirth.formatYYMMDD(),
+      _readCD(istream),
+      "Data of Birth check digit mismatch",
+    );
 
     gender = _read(istream, 1);
     dateOfExpiry = _readDate(istream, futureDate: true);
 
-    _assertCheckDigit(dateOfExpiry.formatYYMMDD(), _readCD(istream),
-        "Data of Expiry check digit mismatch");
+    // _assertCheckDigit(dateOfExpiry.formatYYMMDD(), _readCD(istream),
+    //     "Data of Expiry check digit mismatch");
+
+    _assertCheckDigit(
+      dateOfExpiry.formatYYMMDD(),
+      _readCD(istream),
+      "Data of Expiry check digit mismatch",
+    );
 
     nationality = _read(istream, 3);
     _optData2 = _read(istream, 11);
@@ -216,6 +247,8 @@ class MRZ {
     }
     if (nameIds.length > 1) {
       firstName = nameIds.sublist(1).join(' ');
+    } else {
+      firstName = "";
     }
   }
 

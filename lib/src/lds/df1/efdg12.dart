@@ -42,7 +42,6 @@ class EfDG12 extends DataGroup {
   DateTime? get dateOfIssue => _dateOfIssue;
   String? get issuingAuthority => _issuingAuthority;
 
-
   EfDG12.fromBytes(Uint8List data) : super.fromBytes(data);
 
   @override
@@ -82,7 +81,10 @@ class EfDG12 extends DataGroup {
           _issuingAuthority = utf8.decode(uvtv.value);
           break;
         case DATE_OF_ISSUE_TAG:
-          _dateOfIssue = String.fromCharCodes(uvtv.value).parseDate();
+          // _dateOfIssue = String.fromCharCodes(uvtv.value).parseDate();
+          _dateOfIssue = uvtv.value.length == 4
+              ? uvtv.value.toDate()
+              : String.fromCharCodes(uvtv.value).parseDate();
           break;
       }
     }
