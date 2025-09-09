@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:crypto/crypto.dart';
 import 'package:dmrtd/dmrtd.dart';
 import 'package:dmrtd/extensions.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:dmrtd/src/proto/can_key.dart';
 import 'package:intl/intl.dart';
-
+import 'package:convert/convert.dart';
 import 'package:dmrtd/src/proto/ecdh_pace.dart';
 
 class MrtdData {
@@ -388,10 +388,20 @@ class _MrtdHomePageState extends State<MrtdHomePage>
 
         if (mrtdData.com!.dgTags.contains(EfDG1.TAG)) {
           mrtdData.dg1 = await passport.readEfDG1();
+
+          final dg1Bytes = mrtdData.dg1!.toBytes();
+          final digest = sha256.convert(dg1Bytes);
+          final dg1HashHex = hex.encode(digest.bytes);
+          print(dg1HashHex);
         }
 
         if (mrtdData.com!.dgTags.contains(EfDG2.TAG)) {
           mrtdData.dg2 = await passport.readEfDG2();
+
+          final dg2Bytes = mrtdData.dg2!.toBytes();
+          final digest2 = sha256.convert(dg2Bytes);
+          final dg2HashHex = hex.encode(digest2.bytes);
+          print(dg2HashHex);
         }
 
         // To read DG3 and DG4 session has to be established with CVCA certificate (not supported).
@@ -429,10 +439,20 @@ class _MrtdHomePageState extends State<MrtdHomePage>
 
         if (mrtdData.com!.dgTags.contains(EfDG11.TAG)) {
           mrtdData.dg11 = await passport.readEfDG11();
+
+          final dg11Bytes = mrtdData.dg11!.toBytes();
+          final digest11 = sha256.convert(dg11Bytes);
+          final dg11HashHex = hex.encode(digest11.bytes);
+          print(dg11HashHex);
         }
 
         if (mrtdData.com!.dgTags.contains(EfDG12.TAG)) {
           mrtdData.dg12 = await passport.readEfDG12();
+
+          final dg12Bytes = mrtdData.dg12!.toBytes();
+          final digest12 = sha256.convert(dg12Bytes);
+          final dg12HashHex = hex.encode(digest12.bytes);
+          print(dg12HashHex);
         }
 
         if (mrtdData.com!.dgTags.contains(EfDG13.TAG)) {
@@ -441,6 +461,11 @@ class _MrtdHomePageState extends State<MrtdHomePage>
 
         if (mrtdData.com!.dgTags.contains(EfDG14.TAG)) {
           mrtdData.dg14 = await passport.readEfDG14();
+
+          final dg14Bytes = mrtdData.dg14!.toBytes();
+          final digest14 = sha256.convert(dg14Bytes);
+          final dg14HashHex = hex.encode(digest14.bytes);
+          print(dg14HashHex);
         }
 
         if (mrtdData.com!.dgTags.contains(EfDG15.TAG)) {
@@ -476,6 +501,7 @@ class _MrtdHomePageState extends State<MrtdHomePage>
           }
           _log.error("PassportError: ${e.message}");
         } else {
+          alertMsg = "Error : $se";
           _log.error(
               "An exception was encountered while trying to read Passport: $e");
         }
